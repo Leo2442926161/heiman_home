@@ -1,0 +1,503 @@
+{
+    "oauth2": {
+        "success": {
+            "title": "Authentication Successful",
+            "content": "Authentication successful! Please close this page and return to Home Assistant to continue.",
+            "button": "Close Page"
+        },
+        "fail": {
+            "title": "Authentication Failed",
+            "content": "Authentication failed: {error_msg}. Please close this page and try again.",
+            "button": "Close Page"
+        },
+        "error_msg": {
+            "100": "Invalid input parameters",
+            "101": "Invalid state parameter",
+            "102": "Configuration flow error",
+            "200": "Authentication failed",
+            "201": "Invalid OAuth2 response",
+            "202": "Invalid authorization code",
+            "203": "Invalid refresh token",
+            "300": "HTTP request error",
+            "301": "Unauthorized access",
+            "302": "Invalid access token",
+            "500": "JSON parsing error"
+        }
+    },
+    "config": {
+        "selector": {
+            "cloud_server": {
+                "options": {
+                    "cn": "China Mainland",
+                    "eu": "Europe",
+                    "test": "Test Environment"
+                }
+            },
+            "integration_language": {
+                "options": {
+                    "de": "Deutsch",
+                    "en": "English",
+                    "es": "Español",
+                    "fr": "Français",
+                    "it": "Italiano",
+                    "ja": "日本語",
+                    "nl": "Nederlands",
+                    "pt": "Português",
+                    "pt-BR": "Português (Brasil)",
+                    "ru": "Русский",
+                    "tr": "Türkçe",
+                    "zh-Hans": "简体中文",
+                    "zh-Hant": "繁體中文"
+                }
+            },
+            "area_name_rule": {
+                "options": {
+                    "none": "Do not sync",
+                    "room": "Room name",
+                    "home": "Home name",
+                    "home_room": "Home name and Room name"
+                }
+            },
+            "home_device_count": "devices",
+            "not_sync": "Do not sync",
+            "room_name": "Room name",
+            "home_name": "Home name",
+            "home_and_room_name": "Home name and Room name"
+        },
+        "flow_title": "Heiman Home Integration",
+        "step": {
+            "eula": {
+                "title": "Risk Notice",
+                "description": "1. Your Heiman user information and device information will be stored in your Home Assistant system. **Heiman cannot guarantee the security of Home Assistant's storage mechanism**. You are responsible for preventing your information from being stolen.\r\n2. This integration is maintained by the open-source community and may experience stability issues or other problems. When you encounter problems using this integration, you should **seek help from the open-source community rather than contacting Heiman customer service**.\r\n3. You need to have certain technical skills to maintain your local operating environment. This integration is not user-friendly for beginners.\r\n4. Before using this integration, please read the README carefully.",
+                "data": {
+                    "eula": "I acknowledge the above risks and voluntarily assume the risks associated with using this integration."
+                }
+            },
+            "auth_config": {
+                "title": "Authentication Configuration",
+                "description": "### Login Region\r\nSelect the region where your Heiman account is located.\r\n### Language\r\nSelect the language for device and entity names. Untranslated parts will be displayed in English.\r\n### OAuth2 Redirect URL\r\nThe OAuth2 redirect URL is **[http://homeassistant.local:8123](http://homeassistant.local:8123)**. Home Assistant needs to be on the same local network as the device you're using (e.g., your personal computer), and the device must be able to access Home Assistant via this URL, otherwise login authentication may fail.\r\n### Notes\r\n- For users with hundreds or more Heiman devices, the first integration setup will take some time. Please be patient.\r\n- If Home Assistant is running in a Docker environment, please ensure Docker network mode is set to host, otherwise local control functionality may be affected.",
+                "data": {
+                    "cloud_server": "Login Region",
+                    "integration_language": "Language",
+                    "oauth_redirect_url": "Redirect URL"
+                }
+            },
+            "oauth_error": {
+                "title": "Authentication Error",
+                "description": "Click next to retry"
+            },
+            "select_home": {
+                "title": "Select Homes",
+                "description": "## Room Name Sync Mode\r\nWhen syncing devices from the Heiman app to Home Assistant, the naming of areas in Home Assistant will follow these rules. Note that the syncing process does not change the home and room settings in the Heiman app.\r\n\r\n- **Do not sync**: Devices will not be added to any area.\r\n- **Room name**: Devices will be added to areas named after rooms.\r\n- **Home name**: Devices will be added to areas named after homes.\r\n- **Home name and Room name**: Devices will be added to areas named with home and room combination.\r\n\r\n### Notes\r\n- For users with hundreds or more Heiman devices, the first integration setup will take some time. Please be patient.\r\n- If Home Assistant is running in a Docker environment, please ensure Docker network mode is set to host, otherwise local control functionality may be affected.",
+                "data": {
+                    "home_ids": "Import devices from homes",
+                    "area_name_rule": "Room name sync mode"
+                }
+            },
+            "device_config": {
+                "title": "Configure device ({current}/{total})",
+                "description": "**{device_id}**\r\n\r\nModel: {device_model}\r\nHome: {home_name}\r\nRoom: {room_name}",
+                "data": {
+                    "device_name": "Device name",
+                    "area_id": "Area",
+                    "action": "Action"
+                },
+                "action": {
+                    "next": "Next step",
+                    "skip_all": "Skip and finish",
+                    "remaining_devices": "devices remaining",
+                    "no_area": "No area"
+                }
+            },
+            "confirm": {
+                "title": "Confirm Configuration",
+                "description": "## Configuration Summary\r\n\r\n**User ID:** {user_id}\r\n**Homes:** {home_name}\r\n**Total Devices:** {device_count}\r\n\r\nCheck the box below to confirm and complete the configuration.\r\n\r\n### Notes\r\n- For users with hundreds or more Heiman devices, the first integration setup will take some time. Please be patient.",
+                "data": {
+                    "confirm": "I confirm this configuration"
+                }
+            }
+        },
+        "progress": {
+            "oauth": "### Authentication required, please open the following URL and log in to Heiman Smart Home: {link_left}Click here to login{link_right} If the code is not automatically copied, please paste the following code to authorize the integration: {link}(You will be automatically redirected to the next page after successful login)"
+        },
+        "error": {
+            "eula_not_agree": "Please read the risk notice.",
+            "oauth_code_fut_error": "OAuth code future error",
+            "oauth_client_error": "OAuth client initialization error",
+            "get_token_error": "Failed to get login authorization information (OAuth token).",
+            "get_homeinfo_error": "Failed to get home information.",
+            "no_home_selected": "Please select at least one home.",
+            "no_family_selected": "No home selected.",
+            "no_devices": "The selected home has no devices. Please select a home with devices and continue.",
+            "confirm_required": "Please confirm the configuration to continue.",
+            "invalid_auth_info": "Authentication information has expired, please re-authenticate.",
+            "config_flow_error": "Configuration flow error: {error}",
+            "no_homes_found": "No homes found for this account.",
+            "user_id_not_found": "User ID not found in response.",
+            "http_client_not_initialized": "HTTP client not initialized. Please restart the configuration."
+        },
+        "abort": {
+            "ha_uuid_get_failed": "Failed to get Home Assistant UUID.",
+            "network_connect_error": "Configuration failed, network connection error, please check the network configuration of the device.",
+            "already_configured": "This user has completed configuration. Please go to the integration page and click the configure button to modify.",
+            "config_flow_error": "Integration configuration error: {error}"
+        }
+    },
+    "options": {
+        "step": {
+            "init": {
+                "title": "Options",
+                "description": "Configure Heiman Cloud integration options.",
+                "data": {
+                    "home_id": "Home ID"
+                }
+            }
+        }
+    },
+    "state": {
+        "_": {
+            "on": "On",
+            "off": "Off"
+        },
+        "binary_sensor": {
+            "tamper": {
+                "on": "Test Alarm",
+                "off": "Tamper Cleared"
+            }
+        }
+    },
+    "entity": {
+        "binary_sensor": {
+            "tamper": {
+                "state": {
+                    "on": "Test Alarm",
+                    "off": "Tamper Cleared"
+                }
+            },
+            "smoke": {
+                "state": {
+                    "on": "Smoke Detected",
+                    "off": "Normal"
+                }
+            },
+            "battery": {
+                "state": {
+                    "on": "Battery OK",
+                    "off": "Low Battery"
+                }
+            }
+        },
+        "sensor": {
+            "activity": {
+                "name": "Activity Log"
+            }
+        },
+        "update": {
+            "firmware": {
+                "name": "Firmware Info"
+            }
+        }
+    },
+    "property": {
+        "AlarmSoundOption": {
+            "name": "Alarm Tempo",
+            "options": {
+                "fast": "Fast Beep",
+                "medium": "Medium Beep",
+                "slow": "Slow Beep"
+            }
+        },
+        "LightSwitch": {
+            "name": "Indicator"
+        },
+        "TimeZone": {
+            "name": "Device Time Zone"
+        },
+        "DeviceINFO_MAC": {
+            "name": "MAC Address"
+        },
+        "DeviceINFO_DBM": {
+            "name": "Signal Strength"
+        },
+        "DeviceINFO_IP": {
+            "name": "IP Address"
+        },
+        "DeviceMac": {
+            "name": "MAC Address"
+        },
+        "RemoteLocate": {
+            "name": "Locate Alarm"
+        },
+        "RemoteCheck": {
+            "name": "Test Alarm"
+        },
+        "Mute": {
+            "name": "Hush Alarm"
+        },
+        "CurrentTemperature": {
+            "name": "Device Temperature"
+        },
+        "SmokeSensorState": {
+            "name": "Smoke Alarm"
+        },
+        "TamperState": {
+            "name": "Tamper Alarm"
+        },
+        "BatteryPercentage": {
+            "name": "Battery Level"
+        },
+        "UnderVoltError": {
+            "name": "Low Battery Alarm"
+        },
+        "FreezingPointEnable": {
+            "name": "Freeze Alarm"
+        },
+        "BuzzerEnable": {
+            "name": "Alarm Sound"
+        },
+        "WaterSensorState": {
+            "name": "Water Leakage Alarm"
+        },
+        "FreezingPointAlarm": {
+            "name": "Freeze Alarm"
+        },
+        "RSSI_Level": {
+            "name": "Signal Strength",
+            "options": {
+                "strong": "Strong",
+                "medium": "Medium",
+                "weak": "Weak",
+                "very_weak": "Very Weak"
+            }
+        },
+        "DeviceINFO_DBM_Level": {
+            "name": "Signal Strength",
+            "options": {
+                "strong": "Strong",
+                "medium": "Medium",
+                "weak": "Weak",
+                "very_weak": "Very Weak"
+            }
+        }
+    },
+    "product_type": {
+        "1712020487183466496": "Presence Sensor HS8OS",
+        "1712359967253790720": "IPC Camera",
+        "1712720051041402880": "Floor Heating Control Panel HS6FH-EFA",
+        "1712372301707804672": "Universal Socket",
+        "1712020573225418752": "Temperature and Humidity Sensor H1",
+        "1712715756422234112": "Scene Switch HS2SS",
+        "1712367667308068864": "Infrared Repeater HS1IRC",
+        "1712024520782708736": "Water Leak Detector L1",
+        "1991745959373635584": "Smoke Alarm 638PHW",
+        "1965377788072476672": "Temperature and Humidity Detector 2R",
+        "1712714977074413568": "Air Quality Detector HS3AQ",
+        "1712375576444207104": "Color Temperature Light HS1CCT",
+        "1712355728385310720": "1-Gang Switch HS5SW1A",
+        "1712400967301005312": "Smart Gateway",
+        "1712401168656957440": "WIFI Socket WS2SK",
+        "1712715399667318784": "Heat Detector HS5HA",
+        "1870278823705071616": "Smart Gateway HS3GW-EH",
+        "1965378125911080960": "Temperature and Humidity Detector 2R",
+        "1712004497963941888": "Infrared Repeater",
+        "1712640981356183552": "Standard Socket",
+        "1712309828405362688": "Wireless Switch HS5WS",
+        "1712372951048978432": "Curtain Controller HS6CMR",
+        "1712361682166284288": "Network Camera",
+        "1712376659832930304": "Security Remote HS1RC",
+        "1712309602978299904": "Gas Alarm HS1CG",
+        "1712725549333544960": "Smart Valve Mechanical Arm 511",
+        "1712720159149588480": "Smart Door Lock HS2DL-EF",
+        "1712375299456565248": "3-Gang Switch",
+        "1712366595122331648": "WiFi Water Leak Detector",
+        "1712358530515927040": "Dimmer Switch HS2WDSR",
+        "1712358133067874304": "Curtain Wireless Controller HS2CMR",
+        "1712376983708696576": "CO Sensor HS1CA",
+        "1712403189904637952": "Gas Alarm HS3CG",
+        "1712320365537198080": "Curtain Controller HS5CMR",
+        "1712639133119348736": "Smoke Alarm HS3SA",
+        "1712716335408152576": "Emergency Button HS8EB",
+        "1902647581086011392": "Scene Switch HS5SS",
+        "1712007899645149184": "Smart Gateway HS5GW",
+        "1712640220090007552": "Water Leak Detector HS3WL",
+        "1712638536840314880": "Infrared Detector HS3MS",
+        "1712320566352084992": "2-Gang Switch HS5SW2A",
+        "1712400445454090240": "Scene Switch HS2SS",
+        "1712316465409097728": "2-Gang Switch HS6SW2A(B)",
+        "1712391123537952768": "Smart Remote",
+        "1712641970591170560": "1-Gang Switch",
+        "1712401711836102656": "WIFI Gas Sensor WS2CG",
+        "1712374973433315328": "2-Gang Switch",
+        "1712359416449400832": "Wireless Switch HS2WS",
+        "1712641645348061184": "Curtain Motor Controller HS2CM",
+        "1981621464757325824": "Smoke Alarm 638PHW",
+        "1712720249369067520": "Central Air Conditioning Controller HS5ACC",
+        "1712367285265694720": "WiFi Gas Sensor WS3CG",
+        "1712318823400669184": "1-Gang Switch HS6SW1A(B)",
+        "1825378387500359680": "Fall Detector 4G",
+        "1712719666394365952": "RGB Light Strip HS1SLC",
+        "1712719837794598912": "Presence Sensor HS1OS",
+        "1712020674907930624": "Infrared Detector M1",
+        "1712366998396272640": "WiFi Infrared Repeater",
+        "1712314293732704256": "3-Gang Switch HS6SW3A(B)",
+        "1712714466153660416": "Metering Socket HS5SK",
+        "1712358861433929728": "Color Temperature Switch HS2WDSC",
+        "1712726088226111488": "Roller Shutter Motor Controller HS2HTM",
+        "1712372617983492096": "Smart Relay HS1RM",
+        "1712719549822074880": "Security Remote HS2RC",
+        "1712715634393153536": "Standard Socket HS5ESKB",
+        "1985517560701276160": "Remote Control W",
+        "1722542404803121153": "Gas Alarm HS8CG",
+        "1905532161226346496": "Smoke Alarm 5",
+        "1712402758738575360": "Heiman Small Gateway HS3GW(HS1GW)",
+        "1712397672931065856": "Smart Door Lock",
+        "1712725653515862016": "Downlight HS1LS",
+        "1712005084554133504": "Smoke Alarm HS2SA",
+        "1901598716138250240": "Carbon Monoxide Alarm C1",
+        "1712714203124662272": "Smart Power Switch HS5SWCP-EFA",
+        "1712718316889636864": "Smoke Alarm HS8SA",
+        "1712680657559420928": "Air Quality Detector HS3AQ",
+        "1901826350168301568": "Remote Control WT（915MHz）",
+        "1712722469128962048": "Standard Socket HS5SK",
+        "1712680478273896448": "Curtain Motor Controller",
+        "1712716222916919296": "Emergency Button HS8EB",
+        "1712710585118031872": "Air Quality Detector 1",
+        "1712005248115212288": "Gas Alarm",
+        "1712725869677707264": "WiFi Gas Sensor 气感-JT-720NM-A",
+        "1712715261418864640": "WiFi Drying Rack",
+        "1712711897469616128": "Presence Sensor HS8OS",
+        "1986705377032818688": "Smoke Alarm S1-W",
+        "1712641274093436928": "Metering Socket HS2SK",
+        "1967757059159400448": "Carbon Monoxide Alarm",
+        "1712004815887990784": "Gas Alarm 720N",
+        "1712364646331252736": "Air Quality Detector",
+        "1712715492487266304": "Door Window Sensor HS8DS",
+        "1712719966027055104": "Air Conditioning Control Panel EFA(HS5AC)",
+        "1712008869955436544": "Sleep Band",
+        "1712722777112510464": "3-Gang Switch HS5SW3B",
+        "1712722684602941440": "2-Gang Switch HS5SW2B",
+        "1712320746413555712": "3-Gang Switch HS5SW3A",
+        "1712008644150886400": "Presence Sensor M1",
+        "1712024256864518144": "Smoke Alarm S1",
+        "1902647684156837888": "Emergency Button HS2EB",
+        "1712356469799845888": "Night Light HS2RL",
+        "1712373172243988480": "Standard Socket HS6ESK",
+        "1712653050273005568": "Smart Air Quality Detector WS2AQ",
+        "2009546611342635008": "4G Gas Alarm 气感报警器-JY-720PMS(国内电商版本)",
+        "1712389897245097984": "Sound and Light Alarm HS2WD",
+        "1859408849808068608": "Emergency Button",
+        "1712373500947398656": "Scene Switch HS6SSB",
+        "1947860172705042432": "Motion Detector",
+        "1712725771572936704": "WiFi Drying Rack",
+        "1925004411995840512": "Infrared Detector R",
+        "1712024614907084800": "CO Sensor 传感器-JM-720ES-EF",
+        "1712401376535052288": "Smart Large Gateway HS2GW",
+        "1712714711252008960": "Gas Alarm",
+        "1945736392853688320": "Bosijie Smart Watch",
+        "1877562672210395136": "Test Device 123",
+        "2010887234473619456": "4G Carbon Monoxide Alarm 一氧化碳报警器-JM-720ESY-G(国内电商版本)",
+        "1967757734438150144": "Carbon Monoxide Alarm",
+        "1712320128772931584": "Scene Switch HS6SSA",
+        "1810843560026951680": "Gateway HS5GW-DH",
+        "2018250377056022528": "Smart Gateway WS9GW",
+        "2031623449586757632": "Bosijie Watch",
+        "1712365433157517312": "WiFi Door Window Sensor",
+        "1836958726986551296": "One-Button Alarm HS5EB",
+        "1897462340614512640": "Air Quality Detector WS2AQPC-H",
+        "1856625087102812160": "Dual Gas Alarm CO_GAS_ALARM_4G",
+        "2029440661815095296": "Smoke Alarm S1",
+        "1712680325420875776": "Smart Valve Mechanical Arm",
+        "1712712423137542144": "Presence Sensor HS8MIS",
+        "1712024330952704000": "Door Window Sensor D1",
+        "1712399433364340736": "Air Quality Detector HS2AQ",
+        "1712390763582783488": "Vibration Sensor HS1VS",
+        "1712400078641233920": "Doorbell HS2DB",
+        "1925005054206697472": "Sound and Light Siren W",
+        "1902647500710563840": "Door Window Sensor HS1DS",
+        "1712719407760998400": "Window Pusher",
+        "1712376235579080704": "Emergency Button HS1EB",
+        "1712390254369112064": "Temperature and Humidity Sensor HS1HT",
+        "1925003834175938560": "Water Leak Detector HS2WL-R",
+        "1778688577569275904": "Camera",
+        "1712360385354596352": "Smart Gateway HS5GW",
+        "1712375917021691904": "RGB Light HS1RGBW",
+        "1715253791329660928": "Wall Metering Socket HS2ESK",
+        "1965376700627861504": "Door Window Sensor R",
+        "2013145744913657856": "4G Smoke Alarm 608G(国内电商版本)",
+        "2013806432598290432": "Special OTA Product",
+        "1712023890433343488": "Gas Alarm G1",
+        "1712004778273472512": "Air Quality Detector HS8AQ",
+        "1712723441528012800": "Android Gateway HS8GW",
+        "1848616832096681984": "4G Carbon Monoxide Alarm",
+        "1968114912378396672": "Smoke Alarm 5",
+        "1712722584979832832": "1-Gang Switch HS5SW1B",
+        "1712640647590248448": "Door Window Sensor HS3DS",
+        "2003035365256654848": "4G Door Window Sensor HS1DS",
+        "1810858795714596864": "Door Window Sensor HS3DS-DH",
+        "1960250096146759680": "Wireless Gateway WS3GW-R",
+        "1925004641457823744": "Temperature and Humidity Detector R",
+        "1817102841695662080": "4G Gas Alarm",
+        "1829057177198686208": "Carbon Monoxide Alarm WS722ESY",
+        "2003374935470960640": "WIFI Water Leak Detector 水浸探测器 WS2WL",
+        "1945678693403201536": "Linghang Temperature and Humidity",
+        "1925005204111122432": "Sound and Light Siren W",
+        "2029440232800710664": "Heat Alarm 5HW",
+        "1981624170880323584": "Smoke and CO Alarm 638THW",
+        "1960251398905970688": "Wireless Gateway WS3GW-R",
+        "1825452011297071104": "4G Smoke Alarm",
+        "2001581958272577536": "Smart Gateway WS6GW",
+        "2014884216385892352": "Ruyue Smoke Alarm",
+        "1733421468953686016": "Wireless Gateway WS2GW-R",
+        "1901601085789986816": "Wireless Gateway WS2GW-R",
+        "1818907339086655488": "Gas Alarm 732",
+        "1976225060286898176": "Quantum Sleep Band",
+        "2029438274199154688": "Smoke Alarm HM2SA-1W",
+        "1712711109913542656": "Presence Night Light Sensor HS8MIS",
+        "1904791987064311808": "Development Test",
+        "1712723215366946816": "Gas Alarm",
+        "1958717963930484736": "Fall Radar Detector ED719",
+        "1932322027567980544": "4G Wireless Gateway HS2GW-R",
+        "1712716037365104640": "WiFi Gas Sensor 气感 - 蓝牙版-JT-WS725N-A",
+        "1810858638352699392": "Temperature and Humidity Detector HS2HT-DH",
+        "1734847105526476800": "Heat Alarm 5HW",
+        "1925004014149328896": "Water Leak Detector R",
+        "1810858327047262208": "Infrared Detector 816R",
+        "1925003570375188480": "Door Window Sensor R",
+        "1734848075006291968": "Remote Control W",
+        "1712711005517316096": "Eksonn Audio Video System",
+        "1902647613461843968": "Temperature and Humidity Sensor HS1HT",
+        "1942895503784148992": "Motion Detector",
+        "1810857540850143232": "Smoke Alarm S1-DH",
+        "1925003173451423744": "Door Window Sensor R",
+        "1971100097776623616": "Combustible Gas Detector WS725",
+        "1712710481602609152": "Air Quality Detector WS3AQ",
+        "1843557598376091648": "4G Industrial Gas Sensor",
+        "1904745316418752512": "Emergency Button 03G",
+        "1925004843489058816": "Temperature and Humidity Detector R",
+        "2009433923451023360": "Remote Control HM1RC-W\"",
+        "1925004253962854400": "Infrared Detector HS1MS-R",
+        "1988864661340618752": "Carbon Monoxide Alarm C1-W",
+        "1734821218500292608": "Smoke Alarm HM2SA",
+        "1902647647511203840": "Water Leak Detector HS2WL",
+        "1931192126358036480": "Carbon Monoxide Alarm 720ES",
+        "1965377218767011840": "Door Window Sensor R",
+        "1712717837958840320": "Air Quality Detector HS8AQ",
+        "1712723317632466944": "Air Quality Detector HS2AQ",
+        "1935895977518546944": "Model Test",
+        "1976552577824727040": "4G Wireless Gateway RH",
+        "1831136861127036928": "Remote Control WT",
+        "1866306429412012032": "Multi-Channel Industrial Gas Sensor 721",
+        "1991712324801069056": "Flash Vibration Alarm HM2HIA",
+        "1902647550035578880": "Temperature and Humidity Sensor HS3HT",
+        "1902647384796778496": "Smoke Alarm HS1SA",
+        "2007989417262379008": "Smoke Alarm 638PHW",
+        "1985526736966012928": "Smoke Alarm HM2SA",
+        "1902647320087056384": "Infrared Detector HS1MS",
+        "1712402053902565376": "Presence Sensor HS1MIS",
+        "1901600411274600448": "Smoke Alarm S1-R",
+        "1985528410954682368": "Smoke Alarm HS1SA",
+        "1734839831990972416": "Carbon Monoxide Alarm",
+        "1902647452417347584": "Water Leak Detector HS1WL",
+        "2034575047690694656": "NB Door Window Sensor"
+    }
+}

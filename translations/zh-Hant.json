@@ -1,0 +1,478 @@
+{
+  "oauth2": {
+    "success": {
+      "title": "Authentication Successful",
+      "content": "Authentication successful! Please close this page and return to Home Assistant to continue.",
+      "button": "Close Page"
+    },
+    "fail": {
+      "title": "Authentication Failed",
+      "content": "Authentication failed: {error_msg}. Please close this page and try again.",
+      "button": "Close Page"
+    },
+    "error_msg": {
+      "100": "Invalid input parameters",
+      "101": "Invalid state parameter",
+      "102": "Configuration flow error",
+      "200": "Authentication failed",
+      "201": "Invalid OAuth2 response",
+      "202": "Invalid authorization code",
+      "203": "Invalid refresh token",
+      "300": "HTTP request error",
+      "301": "Unauthorized access",
+      "302": "Invalid access token",
+      "500": "JSON parsing error"
+    }
+  },
+  "config": {
+    "selector": {
+      "cloud_server": {
+        "options": {
+          "cn": "China Mainland",
+          "eu": "Europe",
+          "test": "Test Environment"
+        }
+      },
+      "integration_language": {
+        "options": {
+          "de": "Deutsch",
+          "en": "English",
+          "es": "Español",
+          "fr": "Français",
+          "it": "Italiano",
+          "ja": "日本語",
+          "nl": "Nederlands",
+          "pt": "Português",
+          "pt-BR": "Português (Brasil)",
+          "ru": "Русский",
+          "tr": "Türkçe",
+          "zh-Hans": "简体中文",
+          "zh-Hant": "繁體中文"
+        }
+      },
+      "area_name_rule": {
+        "options": {
+          "none": "不同步",
+          "room": "房間名",
+          "home": "家庭名",
+          "home_room": "家庭名 和 房間名"
+        }
+      },
+      "home_device_count": "個設備",
+      "not_sync": "不同步",
+      "room_name": "房間名",
+      "home_name": "家庭名",
+      "home_and_room_name": "家庭名 和 房間名"
+    },
+    "flow_title": "Heiman Home Integration",
+    "step": {
+      "eula": {
+        "title": "Risk Notice",
+        "description": "1. Your Heiman user information and device information will be stored in your Home Assistant system. **Heiman cannot guarantee the security of Home Assistant's storage mechanism**. You are responsible for preventing your information from being stolen.\r\n2. This integration is maintained by the open-source community and may experience stability issues or other problems. When you encounter problems using this integration, you should **seek help from the open-source community rather than contacting Heiman customer service**.\r\n3. You need to have certain technical skills to maintain your local operating environment. This integration is not user-friendly for beginners.\r\n4. Before using this integration, please read the README carefully.",
+        "data": {
+          "eula": "I acknowledge the above risks and voluntarily assume the risks associated with using this integration."
+        }
+      },
+      "auth_config": {
+        "title": "Authentication Configuration",
+        "description": "### Login Region\r\nSelect the region where your Heiman account is located.\r\n### Language\r\nSelect the language for device and entity names. Untranslated parts will be displayed in English.\r\n### OAuth2 Redirect URL\r\nThe OAuth2 redirect URL is **[http://homeassistant.local:8123](http://homeassistant.local:8123)**. Home Assistant needs to be on the same local network as the device you're using (e.g., your personal computer), and the device must be able to access Home Assistant via this URL, otherwise login authentication may fail.",
+        "data": {
+          "cloud_server": "Login Region",
+          "integration_language": "Language",
+          "oauth_redirect_url": "Redirect URL"
+        }
+      },
+      "oauth_error": {
+        "title": "Authentication Error",
+        "description": "Click next to retry"
+      },
+      "select_home": {
+        "title": "Select Homes",
+        "description": "## Usage Guide\r\n### Select Homes\r\nThe integration will add devices from the selected homes. You can select multiple homes.\r\n\r\n### Available Homes\r\nPlease select the homes where you want to add devices.",
+        "data": {
+          "home_ids": "Select Homes"
+        }
+      },
+      "confirm": {
+        "title": "Confirm Configuration",
+        "description": "## Configuration Summary\r\n\r\n**User ID:** {user_id}\r\n**Homes:** {home_name}\r\n**Total Devices:** {device_count}\r\n\r\nCheck the box below to confirm and complete the configuration.",
+        "data": {
+          "confirm": "I confirm this configuration"
+        }
+      }
+    },
+    "progress": {
+      "oauth": "### 需要驗證身份，請打開以下網址並登陸海曼智家：{link_left}點擊此處登錄{link_right} 如果代碼未自動複製，請粘貼以下代碼授權集成：{link}(登錄成功後將自動跳轉到下一頁)"
+    },
+    "error": {
+      "eula_not_agree": "Please read the risk notice.",
+      "oauth_code_fut_error": "OAuth code future error",
+      "oauth_client_error": "OAuth client initialization error",
+      "get_token_error": "Failed to get login authorization information (OAuth token).",
+      "get_homeinfo_error": "Failed to get home information.",
+      "no_home_selected": "Please select at least one home.",
+      "no_family_selected": "No home selected.",
+      "no_devices": "The selected home has no devices. Please select a home with devices and continue.",
+      "confirm_required": "Please confirm the configuration to continue.",
+      "invalid_auth_info": "Authentication information has expired, please re-authenticate.",
+      "config_flow_error": "Configuration flow error: {error}",
+      "no_homes_found": "No homes found for this account.",
+      "user_id_not_found": "User ID not found in response.",
+      "http_client_not_initialized": "HTTP client not initialized. Please restart the configuration."
+    },
+    "abort": {
+      "ha_uuid_get_failed": "Failed to get Home Assistant UUID.",
+      "network_connect_error": "Configuration failed, network connection error, please check the network configuration of the device.",
+      "already_configured": "This user has completed configuration. Please go to the integration page and click the configure button to modify.",
+      "config_flow_error": "Integration configuration error: {error}"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Options",
+        "description": "Configure Heiman Cloud integration options.",
+        "data": {
+          "home_id": "Home ID"
+        }
+      }
+    }
+  },
+  "state": {
+    "_": {
+      "on": "On",
+      "off": "Off"
+    },
+    "binary_sensor": {
+      "tamper": {
+        "on": "Test Alarm",
+        "off": "Tamper Cleared"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "tamper": {
+        "state": {
+          "on": "Test Alarm",
+          "off": "Tamper Cleared"
+        }
+      },
+      "smoke": {
+        "state": {
+          "on": "Smoke Detected",
+          "off": "Normal"
+        }
+      },
+      "battery": {
+        "state": {
+          "on": "Battery OK",
+          "off": "Low Battery"
+        }
+      }
+    },
+    "sensor": {
+      "activity": {
+        "name": "活動記錄"
+      }
+    },
+    "update": {
+      "firmware": {
+        "name": "固件信息"
+      }
+    },
+    "property": {
+      "AlarmSoundOption": {
+        "name": "聲音選擇",
+        "options": {
+          "fast": "快節奏滴聲",
+          "medium": "中節奏滴聲",
+          "slow": "慢節奏滴聲"
+        }
+      },
+      "LightSwitch": {
+        "name": "指示燈開關"
+      },
+      "TimeZone": {
+        "name": "設備時區"
+      },
+      "DeviceINFO_MAC": {
+        "name": "MAC 地址"
+      },
+      "DeviceINFO_DBM": {
+        "name": "信號強度"
+      },
+      "DeviceINFO_IP": {
+        "name": "IP 地址"
+      },
+      "DeviceMac": {
+        "name": "MAC 地址"
+      },
+      "RemoteLocate": {
+        "name": "遠程定位"
+      },
+      "RemoteCheck": {
+        "name": "遠程自檢"
+      },
+      "Mute": {
+        "name": "遠程靜音"
+      },
+      "CurrentTemperature": {
+        "name": "當前溫度"
+      },
+      "SmokeSensorState": {
+        "name": "煙霧報警狀態"
+      },
+      "TamperState": {
+        "name": "拆除報警狀態"
+      },
+      "BatteryPercentage": {
+        "name": "電池電量百分比"
+      },
+      "UnderVoltError": {
+        "name": "低電量告警狀態"
+      },
+      "FreezingPointEnable": {
+        "name": "冰點報警使能"
+      },
+      "BuzzerEnable": {
+        "name": "報警聲音開關"
+      },
+      "WaterSensorState": {
+        "name": "漏水報警狀態"
+      },
+      "FreezingPointAlarm": {
+        "name": "冰點報警狀態"
+      },
+      "RSSI_Level": {
+        "name": "信號強度等級",
+        "options": {
+          "strong": "強",
+          "medium": "中",
+          "weak": "弱",
+          "very_weak": "極弱"
+        }
+      }
+    }
+  },
+  "product_type": {
+    "1712020487183466496": "存在传感器-HS8OS",
+    "1712359967253790720": "IPC 摄像头",
+    "1712720051041402880": "地暖控制面板 HS6FH-EFA",
+    "1712372301707804672": "通用插座",
+    "1712020573225418752": "温湿度传感器-H1",
+    "1712715756422234112": "非固定情景开关-HS2SS-EFA",
+    "1712367667308068864": "zigbee 红外转发器-HS1IRC-EM",
+    "1712024520782708736": "水浸探测器-L1-EFA",
+    "1991745959373635584": "烟雾报警器 638PHW(868MHz)",
+    "1965377788072476672": "温湿度探测器 HS3HT-2R(868MHz)",
+    "1712714977074413568": "空气质量-HS3AQ-EFA",
+    "1712375576444207104": "色温灯-HS1CCT-N(智能射灯)",
+    "1712355728385310720": "一路开关-HS5SW1A-EFA",
+    "1712400967301005312": "智能网关-GW",
+    "1712401168656957440": "WIFI 插座-WS2SK-A",
+    "1712715399667318784": "温感-HS5HA-EFA",
+    "1870278823705071616": "智能网关 HS3GW-EH",
+    "1965378125911080960": "温湿度探测器 HS3HT-2R(915MHz)",
+    "1712004497963941888": "红外转发器",
+    "1712640981356183552": "普通插座",
+    "1712309828405362688": "无线开关-HS5WS-EFA",
+    "1712372951048978432": "窗帘控制器-HS6CMR-EFA",
+    "1712361682166284288": "网络摄像头",
+    "1712376659832930304": "安防遥控器-HS1RC-EFA",
+    "1712309602978299904": "气感报警器-HS1CG-EFA",
+    "1712725549333544960": "智能阀门机械手 HM-511-EF",
+    "1712720159149588480": "智能门锁 HS2DL-EF",
+    "1712375299456565248": "三路开关",
+    "1712366595122331648": "WiFi 水浸",
+    "1712358530515927040": "调光开关-HS2WDSR-EFA",
+    "1712358133067874304": "窗帘无线控制器-HS2CMR-EF",
+    "1712376983708696576": "CO 传感器-HS1CA-EFA",
+    "1712403189904637952": "气感报警器-HS3CG-N(-EM)",
+    "1712320365537198080": "窗帘控制器-HS5CMR-EFA",
+    "1712639133119348736": "烟感报警器-HS3SA-N(-EM)",
+    "1712716335408152576": "紧急按钮-HS8EB-EF",
+    "1902647581086011392": "固定情景开关-HS5SS-EFA",
+    "1712007899645149184": "智能网关-HS5GW-邦讯 (CGZ001)",
+    "1712640220090007552": "水浸探测器-HS3WL-N(-EM)",
+    "1712638536840314880": "红外探测器-HS3MS-N(-EM)",
+    "1712320566352084992": "二路开关-HS5SW2A-EFA",
+    "1712400445454090240": "固定情景开关-HS2SS-EF",
+    "1712316465409097728": "二路开关-HS6SW2A(B)-EFA",
+    "1712391123537952768": "智能遥控器",
+    "1712641970591170560": "一路开关",
+    "1712401711836102656": "WIFI 气感-WS2CG-A",
+    "1712374973433315328": "二路开关",
+    "1712359416449400832": "无线开关-HS2WS-EF",
+    "1712641645348061184": "窗帘电机控制器-HS2CM-EF",
+    "1981621464757325824": "烟雾报警器 HM-638PHW(915MHz)",
+    "1712720249369067520": "中央空调控制器-HS5ACC-EFA",
+    "1712367285265694720": "WiFi 气感-WS3CG",
+    "1712318823400669184": "一路开关-HS6SW1A(B)-EFA",
+    "1825378387500359680": "跌倒探测器 HS2FD-4G",
+    "1712719666394365952": "RGB 灯带-HS1SLC-EF(调光筒灯)",
+    "1712719837794598912": "存在传感器-HS1OS-EFA",
+    "1712020674907930624": "红外探测器-M1",
+    "1712366998396272640": "WiFi 红外转发器",
+    "1712314293732704256": "三路开关-HS6SW3A(B)-EFA",
+    "1712714466153660416": "计量插座-HS5SK-EFA-GB16",
+    "1712358861433929728": "色温开关-HS2WDSC-EFA",
+    "1712726088226111488": "卷帘电机控制器-HS2HTM-EFA",
+    "1712372617983492096": "智能继电器-HS1RM-EFA",
+    "1712719549822074880": "安防遥控器-HS2RC-EF",
+    "1712715634393153536": "普通插座-HS5ESKB-W-EFA",
+    "1985517560701276160": "遥控器 HM2RC-W(868MHz)",
+    "1722542404803121153": "气感报警器-HS8CG-EFA",
+    "1905532161226346496": "烟雾报警器 WS2SA-5-CNBLM01",
+    "1712402758738575360": "海曼小网关-HS3GW(HS1GW)",
+    "1712397672931065856": "智能门锁",
+    "1712725653515862016": "筒灯-HS1LS",
+    "1712005084554133504": "烟感报警器-HS2SA-EFA",
+    "1901598716138250240": "一氧化碳-C1-R(915MHz)",
+    "1712714203124662272": "智能取电开关 HS5SWCP-EFA",
+    "1712718316889636864": "烟感报警器-HS8SA-EFA",
+    "1712680657559420928": "空气检测仪-HS3AQ-4G",
+    "1901826350168301568": "遥控器 HM3RC-WT（915MHz）",
+    "1712722469128962048": "普通插座-HS5SK-EFA-GB10",
+    "1712680478273896448": "窗帘电机控制器-TY",
+    "1712716222916919296": "紧急按钮-HS8EB-86 盒",
+    "1712710585118031872": "空气质量 HS8AQ-1",
+    "1712005248115212288": "气感报警器-JT-HS3CG",
+    "1712725869677707264": "WiFi 气感-JT-720NM-A",
+    "1712715261418864640": "WiFi 晾衣架 - 简易版",
+    "1712711897469616128": "存在传感器-HS8OS-EFA",
+    "1986705377032818688": "烟雾报警器 S1-W",
+    "1712641274093436928": "计量插座-HS2SK-EFA",
+    "1967757059159400448": "一氧化碳报警器-HM-733ESY-W(868MHz)",
+    "1712004815887990784": "气感报警器 -720N",
+    "1712364646331252736": "空气检测仪-OLD-WS2AQ",
+    "1712715492487266304": "门磁探测器-HS8DS-EFA",
+    "1712719966027055104": "空调控制面板 HS6AC-EFA(HS5AC)",
+    "1712008869955436544": "睡眠带",
+    "1712722777112510464": "三路开关-HS5SW3B-EFA",
+    "1712722684602941440": "二路开关-HS5SW2B-EFA",
+    "1712320746413555712": "三路开关-HS5SW3A-EFA",
+    "1712008644150886400": "占位传感器-M1",
+    "1712024256864518144": "烟感报警器-S1",
+    "1902647684156837888": "紧急按钮-HS2EB-EFA",
+    "1712356469799845888": "小夜灯-HS2RL-EF",
+    "1712373172243988480": "普通插座-HS6ESK-EFA(HS5ESK)",
+    "1712653050273005568": "智能空气检测仪-WS2AQ-A",
+    "2009546611342635008": "4G 气感报警器-JY-720PMS(国内电商版本)",
+    "1712389897245097984": "声光报警器-HS2WD-EFA",
+    "1859408849808068608": "HS5EB 新 - 测试",
+    "1712373500947398656": "固定情景开关-HS6SSB-EFA",
+    "1947860172705042432": "WS3MS-H",
+    "1712725771572936704": "WiFi 晾衣架",
+    "1925004411995840512": "红外探测器 HS1MS-R(915MHz)",
+    "1712024614907084800": "CO 传感器-JM-720ES-EF",
+    "1712401376535052288": "智能大网关-HS2GW",
+    "1712714711252008960": "气感报警器-JT-HS1CG-EFA",
+    "1945736392853688320": "博实结智能手表",
+    "1877562672210395136": "测试 123",
+    "2010887234473619456": "4G 一氧化碳报警器-JM-720ESY-G(国内电商版本)",
+    "1967757734438150144": "一氧化碳报警器-HM-735ESY-W(868MHz)",
+    "1712320128772931584": "固定情景开关-HS6SSA-EFA",
+    "1810843560026951680": "网关 HS5GW-DH",
+    "2018250377056022528": "智能网关 WS9GW",
+    "2031623449586757632": "博实结手表（新）",
+    "1712365433157517312": "WiFi 门磁",
+    "1836958726986551296": "一键报警器 HS5EB",
+    "1897462340614512640": "空气质量检测仪 WS2AQPC-H",
+    "1856625087102812160": "双气报警器 CO_GAS_ALARM_4G",
+    "2029440661815095296": "烟雾报警器-S1-R(433MHz)",
+    "1712680325420875776": "智能阀门机械手 TY",
+    "1712712423137542144": "占位传感器-HS8MIS-EFA",
+    "1712024330952704000": "门磁探测器-D1-EFA",
+    "1712399433364340736": "空气质量-HS2AQ-EFA",
+    "1712390763582783488": "震动传感器-HS1VS-EFA",
+    "1712400078641233920": "门铃-HS2DB-EFA",
+    "1925005054206697472": "声光警号 HM2WD-W(868MHz)",
+    "1902647500710563840": "门磁探测器-HS1DS-EFA",
+    "1712719407760998400": "推窗器",
+    "1712376235579080704": "紧急按钮-HS1EB-EFA",
+    "1712390254369112064": "温湿度传感器-HS1HT-EFA",
+    "1925003834175938560": "水浸探测器 HS2WL-R(868MHz)",
+    "1778688577569275904": "摄像头",
+    "1712360385354596352": "智能网关-HS5GW",
+    "1712375917021691904": "RGB 灯-HS1RGBW-N",
+    "1715253791329660928": "墙面计量插座-HS2ESK-EF",
+    "1965376700627861504": "门磁探测器 HS1DS-R(868MHz)",
+    "2013145744913657856": "4G 烟雾报警器—HM-608G(国内电商版本)",
+    "2013806432598290432": "特殊 OTA 产品使用",
+    "1712023890433343488": "气感报警器-G1",
+    "1712004778273472512": "空气质量 HS8AQ",
+    "1712723441528012800": "安卓网关-HS8GW",
+    "1848616832096681984": "4G 一氧化碳报警器",
+    "1968114912378396672": "烟雾报警器 WS2SA-5-H",
+    "1712722584979832832": "一路开关-HS5SW1B-EFA",
+    "1712640647590248448": "门磁探测器-HS3DS-N(-EM)",
+    "2003035365256654848": "4G 门磁-HS1DS-G(国内电商版本)",
+    "1810858795714596864": "门磁 HS3DS-DH",
+    "1960250096146759680": "无线级联网关 WS3GW-R（868MHz）",
+    "1925004641457823744": "温湿度探测器 HS3HT-R(868MHz)",
+    "1817102841695662080": "4G 气感报警器",
+    "1829057177198686208": "一氧化碳报警器 JM-WS722ESY",
+    "2003374935470960640": "WIFI 水浸探测器 WS2WL",
+    "1945678693403201536": "领航温湿度",
+    "1925005204111122432": "声光警号 HM2WD-W(915MHz)",
+    "2029440232800710664": "温感报警器 HM-5HW-T(433MHz)",
+    "1981624170880323584": "烟雾和一氧化碳 HM-638THW(915MHz)",
+    "1960251398905970688": "无线级联网关 WS3GW-R(915MHz)",
+    "1825452011297071104": "4G 烟雾报警器",
+    "2001581958272577536": "智能网关 WS6GW（868MHz）",
+    "2014884216385892352": "如约-HM-618PH_远程升级",
+    "1733421468953686016": "无线级联网关 WS2GW-R（868MHz）",
+    "1901601085789986816": "无线级联网关 WS2GW-R(915MHz)",
+    "1818907339086655488": "燃气报警器 JT-732---test",
+    "1976225060286898176": "量子睡眠带",
+    "2029438274199154688": "烟雾报警器-HM2SA-1W(433MHz)",
+    "1712711109913542656": "占位小夜灯传感器-HS8MIS-86-EFA",
+    "1904791987064311808": "开发测试",
+    "1712723215366946816": "燃气报警器-JT-720NM-EF",
+    "1958717963930484736": "跌倒雷达探测仪 ED719",
+    "1932322027567980544": "4G 无线级联网关 HS2GW-R(868MHz)",
+    "1712716037365104640": "WiFi 气感 - 蓝牙版-JT-WS725N-A",
+    "1810858638352699392": "温湿度探测器 HS2HT-DH",
+    "1734847105526476800": "温感报警器 HM-5HW-T(868MHz)",
+    "1925004014149328896": "水浸探测器 HS2WL-R(915MHz)",
+    "1810858327047262208": "红外探测器 HM-816R-DH",
+    "1925003570375188480": "门磁探测器 HS2DS-R(915MHz)",
+    "1734848075006291968": "遥控器 HM1RC-W(868MHz)",
+    "1712711005517316096": "埃克思影音系统",
+    "1902647613461843968": "温湿度传感器-HS1HT-M",
+    "1942895503784148992": "WS3VD-H",
+    "1810857540850143232": "烟雾报警器 S1-DH",
+    "1925003173451423744": "门磁探测器 HS2DS-R(868MHz)",
+    "1971100097776623616": "可燃气体探测器 JT-WS725",
+    "1712710481602609152": "空气检测仪-WS3AQ",
+    "1843557598376091648": "4G 工业气感",
+    "1904745316418752512": "紧急按钮 HM-03G",
+    "1925004843489058816": "温湿度探测器 HS3HT-R(915MHz)",
+    "2009433923451023360": "遥控器 HM1RC-W(915MHz)",
+    "1925004253962854400": "红外探测器 HS1MS-R(868MHz)",
+    "1988864661340618752": "一氧化碳报警器 C1-W",
+    "1734821218500292608": "烟雾报警器-HM2SA-1W(868MHz)",
+    "1902647647511203840": "水浸探测器-HS2WL-EFA",
+    "1931192126358036480": "一氧化碳报警器 WS-720ES",
+    "1965377218767011840": "门磁探测器 HS1DS-R(915MHz)",
+    "1712717837958840320": "空气质量-HS8AQ-EFA",
+    "1712723317632466944": "空气质量-HS2AQ-EA",
+    "1935895977518546944": "模型测试",
+    "1976552577824727040": "4G 无线级联网关 HS2GW-RH(433MHz)",
+    "1831136861127036928": "遥控器 HM3RC-WT（868MHz）",
+    "1866306429412012032": "多路工业气感 GTYQ-721-4G",
+    "1991712324801069056": "闪光震动报警器 HM2HIA(868MHz)",
+    "1902647550035578880": "温湿度传感器-HS3HT-EFA",
+    "1902647384796778496": "烟感报警器-HS1SA-EFA",
+    "2007989417262379008": "烟雾报警器 HM-638PHW(868MHz)",
+    "1985526736966012928": "烟雾报警器-HM2SA-MA-W(868MHz)",
+    "1902647320087056384": "红外探测器-HS1MS-EFA",
+    "1712402053902565376": "占位传感器-HS1MIS-EFA",
+    "1901600411274600448": "烟雾报警器 S1-R(915MHz)",
+    "1985528410954682368": "烟雾报警器-HS1SA-R(868MHz)",
+    "1734839831990972416": "一氧化碳报警器-HM-720ES-W(868MHz)",
+    "1902647452417347584": "水浸探测器-HS1WL-EFA",
+    "2034575047690694656": "nb 门磁"
+  }
+}
