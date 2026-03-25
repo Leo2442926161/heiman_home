@@ -659,7 +659,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 - **Documentation**: [GitHub Wiki](https://github.com/Leo2442926161/heiman_home/wiki)
 - **Issues**: [GitHub Issues](https://github.com/Leo2442926161/heiman_home/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/Leo2442926161/heiman_home/discussions)
+- **Discussions**: [GitHub Discussions](https://github.com/Leo2442926161/Heiman-Products/discussions)
 
 ---
 
